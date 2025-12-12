@@ -36,31 +36,31 @@ module tb ();
     r_en  = 1'b0;
     
     for (i = 0; i < 17; i = i + 1) begin
-      @(posedge clk);
+      @(negedge clk);
       wdata = i; 
       w_en  = 1'b1;
       
-      @(posedge clk);
+      @(negedge clk);
       w_en = 1'b0;
     end
     
     rst = 1'b1;
-    repeat(3) @(posedge clk);
+    repeat(3) @(negedge clk);
     rst = 1'b0;
     
     for (i = 0; i < 17; i = i + 1) begin
-      @(posedge clk);
+      @(negedge clk);
       wdata = i; 
       w_en  = 1'b1;
       
-      @(posedge clk);
+      @(negedge clk);
       w_en = 1'b0;
     end
     
     repeat(17)begin
-      @(posedge clk);
+      @(negedge clk);
       r_en = 1'b1;
-      @(posedge clk);
+      @(negedge clk);
       r_en = 1'b0;
     end
     
@@ -68,7 +68,7 @@ module tb ();
     w_en  = 1'b0;
   	r_en  = 1'b0;
     repeat (2) begin
-      @(posedge clk);
+      @(negedge clk);
   	  w_en  = 1'b1;
   	  r_en  = 1'b1;
   	  wdata = $urandom;
@@ -76,7 +76,7 @@ module tb ();
 	end
     
     repeat (50) begin
-  	  @(posedge clk);
+      @(negedge clk);
   	  w_en  = $urandom_range(0,1);
   	  r_en  = $urandom_range(0,1);
   	  wdata = $urandom;
@@ -96,7 +96,7 @@ module tb ();
   
   //實例化DUT---------------------------------------------------------------------------------------------
   
-  fifo uut (.clk(clk), .rst(rst), .wdata(wdata), .r_en(r_en), .w_en(w_en), .rdata(rdata), .wfull(wfull), .rempty(rempty));
+  synchronous_FIFO uut (.clk(clk), .rst(rst), .wdata(wdata), .r_en(r_en), .w_en(w_en), .rdata(rdata), .wfull(wfull), .rempty(rempty));
   
 endmodule
 

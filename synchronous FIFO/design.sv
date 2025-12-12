@@ -1,5 +1,5 @@
 // Code your design here
-module fifo(
+module synchronous_FIFO(
   input clk,
   input rst,
   input [7:0]wdata,
