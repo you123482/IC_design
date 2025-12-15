@@ -28,12 +28,16 @@ module asynchronous_FIFO(
   /*assign full = (wptr_g[addrsize:addrsize-1] == ~rptr_grr[addrsize:addrsize-1] && wptr_g[addrsize-2:0] == rptr_grr[addrsize-2:0])?1'b1:1'b0;
   assign empty = (wptr_grr == rptr_g)?1'b1:1'b0;*/
   
+  //full計算
+  
   always@(posedge clk1)begin
     if((wptr_g[addrsize:addrsize-1] == ~rptr_grr[addrsize:addrsize-1] && wptr_g[addrsize-2:0] == rptr_grr[addrsize-2:0]))
       full <= 1;
     else
       full <= 0;
   end
+  
+  //empty計算
   
   always@(posedge clk2)begin
     if(wptr_grr == rptr_g)
@@ -42,6 +46,8 @@ module asynchronous_FIFO(
       empty <= 0;
     
   end
+  
+  //2 flop rptr
   
   always@(posedge clk1)begin
     if(rst1)begin
@@ -53,6 +59,8 @@ module asynchronous_FIFO(
     end
   end
   
+  //2 flop wptr
+  
   always@(posedge clk2)begin
     if(rst2)begin
       wptr_gr <= 0;
@@ -62,6 +70,8 @@ module asynchronous_FIFO(
       {wptr_grr, wptr_gr} <= {wptr_gr, wptr_g};
     end
   end
+  
+  //fifo in
   
   always@(posedge clk1)begin
     if(rst1)begin
@@ -74,6 +84,8 @@ module asynchronous_FIFO(
       end
     end
   end
+  
+  //fifo out
   
   always@(posedge clk2)begin
     if(rst2)begin

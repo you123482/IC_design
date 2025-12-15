@@ -14,6 +14,8 @@ module tb();
   wire full;
   wire empty;
   
+  //產生clk
+  
   initial begin
     clk1 = 0;
     forever #3 clk1 = ~clk1;
@@ -23,6 +25,8 @@ module tb();
     clk2 = 0;
     forever #5 clk2 = ~clk2;
   end
+  
+  //rst
   
   initial begin
     w_en = 0;
@@ -37,6 +41,8 @@ module tb();
     repeat(2)@(negedge clk2);
     rst2 = 0;
   end
+  
+  //紀錄檔
   
   initial begin
     $dumpfile("dump.vcd");
@@ -88,6 +94,8 @@ module tb();
     $finish;
   end*/
   
+  //隨機讀寫
+  
   always@(negedge clk1)begin
     w_en  = $urandom_range(0,1);
     wdata = $urandom;
@@ -96,6 +104,8 @@ module tb();
   always@(negedge clk2)begin
     r_en  = $urandom_range(0,1);
   end
+  
+  //實例化
   
   asynchronous_FIFO #(.datasize(8), .addrsize(4)) uut(.clk1(clk1), .clk2(clk2), .rst1(rst1), .rst2(rst2), .w_en(w_en), .r_en(r_en), .wdata(wdata), .rdata(rdata), .full(full), .empty(empty));
   
